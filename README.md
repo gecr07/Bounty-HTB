@@ -17,7 +17,7 @@ dirbuster -u http://10.129.1.185/ -t 200 -l /usr/share/wordlists/seclists/Discov
 ```
 Siempre que estes probando algo creo que es bueno ver hacktricks.
 
-
+> https://book.hacktricks.xyz/network-services-pentesting/pentesting-web/iis-internet-information-services
 
 
 
