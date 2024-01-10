@@ -8,7 +8,7 @@ Esta maquina solo tiene el puerto 80 abierto.
 
 ## Dirbuster y WFUZZ
 
-Para esta maquina ya nos dimos cuenta que nos enfrentamos a un ISS 7.5 buscamos archivos .aspx, .asp, .config.
+Para esta maquina ya nos dimos cuenta que nos enfrentamos a un ***IIS 7.5*** buscamos archivos .aspx, .asp, .config.
 
 ```
 dirbuster -u http://10.129.1.185/ -t 200 -l /usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -r dirout.ext -e php,txt,html,asp,aspx,config
