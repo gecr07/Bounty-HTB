@@ -156,6 +156,8 @@ Entonces en este punto ya sabemos que se puede subir una extencion .config por l
 
 > https://0xdf.gitlab.io/2018/10/27/htb-bounty.html
 
+> https://www.ivoidwarranties.tech/posts/pentesting-tuts/iis/web-config/ 
+
 Con esto ganamos acceso a la maquina y ya sabes haciendo una enumeracion vemos el privilegio de SetImpersonate. Algo a destacar la flag estaba escondida como archivo oculto. usa las opciones /a:h tanto como para buscar como para listar.
 
 ### JuicePotato
