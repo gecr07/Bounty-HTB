@@ -172,8 +172,11 @@ La manera mas facil de escalar privilegios.
 ![image](https://github.com/gecr07/Bounty-HTB/assets/63270579/4d86d65b-f0b9-4819-a76a-4390e58a2420)
 
 
+Recursos interesantes..
 
+> https://github.com/psychsecurity/Red-Team-Infrastructure/blob/master/README.md
 
+> 
 
 
 
