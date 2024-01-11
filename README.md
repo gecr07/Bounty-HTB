@@ -152,6 +152,9 @@ Entonces en este punto ya sabemos que se puede subir una extencion .config por l
 
 ![image](https://github.com/gecr07/Bounty-HTB/assets/63270579/a07d1f8f-3ce1-43cd-b514-8f956b4581db)
 
+> https://research.nccgroup.com/2019/08/23/getting-shell-with-xamlx-files/
+
+> https://0xdf.gitlab.io/2018/10/27/htb-bounty.html
 
 Con esto ganamos acceso a la maquina y ya sabes haciendo una enumeracion vemos el privilegio de SetImpersonate. Algo a destacar la flag estaba escondida como archivo oculto. usa las opciones /a:h tanto como para buscar como para listar.
 
